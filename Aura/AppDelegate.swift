@@ -17,13 +17,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window : UIWindow?
     let loginNav = UINavigationController(rootViewController: LoginController())
     var tabVC: TabBarController?
+    
+    // MARK: - Language Configuration Helper
+    private func configureAppLanguage() {
+        // Remove any cached language preference to get true system language
+        UserDefaults.standard.removeObject(forKey: "AppleLanguages")
+        UserDefaults.standard.synchronize()
+        
+        // Get actual system language
+        let systemLang = Locale.preferredLanguages.first ?? "en"
+        let langCode = systemLang.split(separator: "-").map { String($0) }[0]
+        
+        // Set app language: Japanese if system is Japanese, otherwise English
+        let appLang = (langCode == "ja") ? "ja" : "en"
+        UserDefaults.standard.set([appLang], forKey: "AppleLanguages")
+        UserDefaults.standard.synchronize()
+        
+        print("✅ Language Configuration - System: \(systemLang), App set to: \(appLang)")
+    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
+        // Configure app language based on system settings
+        configureAppLanguage()
+        
+        // Paste into AppDelegate or SceneDelegate at startup
+        print("Locale.preferredLanguages: ", Locale.preferredLanguages)
+        print("Bundle.main.localizations: ", Bundle.main.localizations)
+        print("Bundle.main.developmentLocalization: ", Bundle.main.developmentLocalization ?? "nil")
+        let preferredForApp = Bundle.preferredLocalizations(from: Locale.preferredLanguages)
+        print("Bundle.preferredLocalizations(from: preferredLanguages): ", preferredForApp)
+            
         // Configure Firebase
         FirebaseApp.configure()
         RCManager.shared.configure(expirationDuration: K.RCConstants.minimumFetchTime)
-
+        
         _ = Firestore.firestore()
         _ = Storage.storage()
         
@@ -35,11 +63,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             FirebaseManager.shared.loadUser()
             Utilities.shared.isUserSignedIn = true
         }
-        
-        
-        // print(db, "\n")
-        // print(storage, "\n")
-        // print(Realm.Configuration.defaultConfiguration.fileURL, "\n")
         
         // Initialize New Realm
         do {
@@ -70,9 +93,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Do interface stuff for ios 12 version
         if #available(iOS 13.0, *) {
             // Do only pure app launch stuff, not interface stuff
-        }
-        
-        else {
+        } else {
             
             tabVC = TabBarController()
             
@@ -109,6 +130,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("foreground")
     }
     
+    func getDeviceLanguageCode() -> String {
+        
+        guard let code = Locale.preferredLanguages.first else { return "en" }
+        
+        let codeAndRegion = code.split(separator: "-").map { String($0) }
+        
+        if codeAndRegion.count >= 3 {
+            
+            return "\(codeAndRegion[0])-\(codeAndRegion[1])"
+            
+        } else { return codeAndRegion[0] }
+    }
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         
         guard let components = NSURLComponents(url: url, resolvingAgainstBaseURL: true),
