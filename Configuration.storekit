@@ -1,0 +1,78 @@
+{
+  "identifier" : "B750BC5D",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "46.99",
+      "familyShareable" : false,
+      "internalID" : "13212CD3",
+      "localizations" : [
+        {
+          "description" : "Lifetime access to the EHD Master Course",
+          "displayName" : "English HD Master Course",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.iai.Aura.EHDMasterCourse",
+      "referenceName" : "English HD Master Course",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "149.99",
+      "familyShareable" : false,
+      "internalID" : "EEEC078E",
+      "localizations" : [
+        {
+          "description" : "Learn English Pronunciation and Conversation",
+          "displayName" : "English Course Bundle",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "ehd_kyg_bundle",
+      "referenceName" : "EHD KYG Bundle",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "99.99",
+      "familyShareable" : false,
+      "internalID" : "E2A46854",
+      "localizations" : [
+        {
+          "description" : "Californian English Conversational Course",
+          "displayName" : "Kalifornya Glamour Course",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "kyg_course",
+      "referenceName" : "KYG Course",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "119.99",
+      "familyShareable" : false,
+      "internalID" : "961679DE",
+      "localizations" : [
+        {
+          "description" : "Californian English Conversational Course",
+          "displayName" : "Kalifornya Glamour Course",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "kyg_course_no_discount",
+      "referenceName" : "KYG No Discount",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 1,
+    "minor" : 1
+  }
+}
