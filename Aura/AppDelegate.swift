@@ -19,7 +19,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var tabVC: TabBarController?
     
     // MARK: - Language Configuration Helper
-    private func configureAppLanguage() {
+    private func configureAppLanguage() -> Bool {
+        // Get current app language BEFORE clearing
+        let currentAppLang = UserDefaults.standard.stringArray(forKey: "AppleLanguages")?.first
+        
         // Remove any cached language preference to get true system language
         UserDefaults.standard.removeObject(forKey: "AppleLanguages")
         UserDefaults.standard.synchronize()
@@ -34,12 +37,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UserDefaults.standard.synchronize()
         
         print("✅ Language Configuration - System: \(systemLang), App set to: \(appLang)")
+        
+        // Check if language changed
+        if let current = currentAppLang, current != appLang {
+            print("⚠️ Language changed from \(current) to \(appLang) - Restart required")
+            return true // Language changed
+        }
+        
+        return false // No change
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         // Configure app language based on system settings
-        configureAppLanguage()
+        let languageChanged = configureAppLanguage()
+        
+        // If language changed, restart the app immediately
+        if languageChanged {
+            // Exit and let user relaunch (iOS standard behavior)
+            fatalError("Language changed - App will restart")
+        }
         
         // Paste into AppDelegate or SceneDelegate at startup
         print("Locale.preferredLanguages: ", Locale.preferredLanguages)
