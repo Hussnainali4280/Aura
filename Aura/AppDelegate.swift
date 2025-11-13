@@ -40,8 +40,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Check if language changed
         if let current = currentAppLang, current != appLang {
-            print("⚠️ Language changed from \(current) to \(appLang) - Restart required")
-            return true // Language changed
+           
+        
+                print("⚠️ Language changed from \(current) to \(appLang) - Restart required")
+                return true // Language changed
+
         }
         
         return false // No change
@@ -50,14 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         // Configure app language based on system settings
-        let languageChanged = configureAppLanguage()
-        
-        // If language changed, restart the app immediately
-        if languageChanged {
-            // Exit and let user relaunch (iOS standard behavior)
-            fatalError("Language changed - App will restart")
-        }
-        
+      
         // Paste into AppDelegate or SceneDelegate at startup
         print("Locale.preferredLanguages: ", Locale.preferredLanguages)
         print("Bundle.main.localizations: ", Bundle.main.localizations)
@@ -71,6 +67,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         _ = Firestore.firestore()
         _ = Storage.storage()
+        
+        if UserDefaults.standard.bool(forKey: "First_Time"){
+        let languageChanged = configureAppLanguage()
+        
+        // If language changed, restart the app immediately
+        if languageChanged {
+            // Exit and let user relaunch (iOS standard behavior)
+            fatalError("Language changed - App will restart")
+        }
+        }else{
+            UserDefaults.standard.set(true,forKey: "First_Time")
+            return false
+           
+        }
         
         FirebaseManager.shared.loadLessons()
         FirebaseManager.shared.loadSuperUser()

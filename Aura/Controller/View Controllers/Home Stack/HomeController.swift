@@ -434,7 +434,7 @@ class HomeController: UIViewController {
                                                                      action: #selector(settingsButtonTapped))
         }
         
-        // Make bar color purple, and buttons white
+
         // Make bar color purple, and buttons white
         self.navigationController?.navigationBar.tintColor = .white
         self.navigationController?.navigationBar.isTranslucent = false

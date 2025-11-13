@@ -288,7 +288,22 @@ class FlashCardController: UIViewController {
         
         // Make bar color purple, and buttons white
         self.navigationController?.navigationBar.tintColor = .white
-        self.navigationController?.navigationBar.barTintColor = K.DesignColors.primary
+        self.navigationController?.navigationBar.isTranslucent = false
+
+        // Configure navigation bar appearance for iOS 13+
+        if #available(iOS 13.0, *) {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = K.DesignColors.primary
+            appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+            appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+            
+            self.navigationController?.navigationBar.standardAppearance = appearance
+            self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
+            self.navigationController?.navigationBar.compactAppearance = appearance
+        } else {
+            self.navigationController?.navigationBar.barTintColor = K.DesignColors.primary
+        }
         
         // Initialize My Decks Scroll View
         if let decks = Utilities.shared.user?.decks {
