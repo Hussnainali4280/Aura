@@ -465,10 +465,10 @@ class HomeController: UIViewController {
         
         // Initialize Popular Decks Scroll View
         if let decks = Utilities.shared.superUser?.decks {
-            popularFlashcardScrollView = PopularDecksScrollView(frame: .zero, decks: decks)
+            popularFlashcardScrollView = PopularDecksScrollView(frame: .zero, decks: decks, isFromHomeController: true)
             popularFlashcardScrollView.popularDeckDelegate = self
         } else {
-            popularFlashcardScrollView = PopularDecksScrollView(frame: .zero)
+            popularFlashcardScrollView = PopularDecksScrollView(frame: .zero, decks: [], isFromHomeController: true)
             popularFlashcardScrollView.popularDeckDelegate = self
             
             FirebaseManager.shared.loadSuperUser()
@@ -660,6 +660,16 @@ extension HomeController: MyDeckScrollViewDelegate, PopularDeckScrollViewDelegat
         let action = UIAlertAction(title: NSLocalizedString("OK", comment: "ok, I acknowledge the action (for example successfully signing out) that just happened. When I press ok, the alert will go away and I can continue doing what I am doing in the app"), style: .cancel, handler: nil)
         alert.addAction(action)
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    func goToDeckController(deckIndex: Int) {
+        // Navigate to DeckController (FlashCard tab)
+        let tabVC = self.tabBarController
+        tabVC?.selectedIndex = 3 // Assuming FlashCard tab is at index 2
+        
+        // Optional: Pass the selected deck index to the controller if needed
+        // You can implement additional logic here to show the specific deck
+        print("Navigating to DeckController with deck index: \(deckIndex)")
     }
     
     func goToLesson(lessonIndex: Int) {

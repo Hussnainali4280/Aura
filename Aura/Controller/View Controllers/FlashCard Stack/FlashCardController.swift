@@ -469,6 +469,12 @@ extension FlashCardController: MyDeckScrollViewDelegate, PopularDeckScrollViewDe
         self.present(alert, animated: true, completion: nil)
     }
     
+    func goToDeckController(deckIndex: Int) {
+        // Already in DeckController, so this method won't be called from here
+        // But we need to implement it to conform to the protocol
+        print("Already in DeckController")
+    }
+    
 }
 
 extension FlashCardController: NetworkConnectionUpdater {

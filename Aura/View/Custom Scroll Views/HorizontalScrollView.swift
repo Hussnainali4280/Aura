@@ -231,6 +231,7 @@ class MyDecksScrollView: HorizontalScrollView {
 
 protocol PopularDeckScrollViewDelegate {
     func showPurchasePopUp(deckIndex: Int)
+    func goToDeckController(deckIndex: Int)
 }
 
 
@@ -238,10 +239,12 @@ class PopularDecksScrollView: HorizontalScrollView {
     
     var popularDeckDelegate: PopularDeckScrollViewDelegate?
     var decks = [DeckModel]()
+    var isFromHomeController: Bool = false // Flag to determine behavior
     
-    convenience init(frame: CGRect, decks: [DeckModel]) {
+    convenience init(frame: CGRect, decks: [DeckModel], isFromHomeController: Bool = false) {
         self.init(frame: frame)
         self.decks = decks
+        self.isFromHomeController = isFromHomeController
         addDeckViews()
     }
     
@@ -345,7 +348,14 @@ class PopularDecksScrollView: HorizontalScrollView {
             
         } completion: { (_) in
             
-            self.popularDeckDelegate?.showPurchasePopUp(deckIndex: sender.index)
+            // Check which controller we're coming from
+            if self.isFromHomeController {
+                // From HomeController -> Go to DeckController
+                self.popularDeckDelegate?.goToDeckController(deckIndex: sender.index)
+            } else {
+                // From DeckController -> Show purchase popup
+                self.popularDeckDelegate?.showPurchasePopUp(deckIndex: sender.index)
+            }
             
         }
         
